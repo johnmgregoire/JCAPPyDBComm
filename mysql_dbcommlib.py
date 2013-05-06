@@ -1,13 +1,17 @@
 import MySQLdb, MySQLdb.cursors
 import numpy, pylab
 import time, datetime
-import os
+import os, sys
+
+PyCodePath=os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
+sys.path.append(os.path.join(PyCodePath, 'PythonCodeSecureFiles'))
+from url import url
 
 
     
     
 class dbcomm():
-    def __init__(self, url='hte-dbsv-01.caltech.edu',user='',password='',db='hte_echemdrop_proto'):
+    def __init__(self, url=url, user='',password='',db='hte_echemdrop_proto'):
         self.db=MySQLdb.connect(url, user, password, db, cursorclass = MySQLdb.cursors.SSCursor)
         self.cursor=self.db.cursor()
 

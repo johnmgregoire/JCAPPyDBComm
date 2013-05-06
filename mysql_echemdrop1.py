@@ -1,13 +1,13 @@
 import MySQLdb, MySQLdb.cursors
 import numpy, pylab
 import time, datetime
-import pickle, os
+import pickle, os, sys
 
-
-    
+sys.path.append('C:/Users/Public/Documents/PythonCode/PythonCodeSecureFiles')
+from url import url
     
 class dbcomm():
-    def __init__(self, url='hte-dbsv-01.caltech.edu',user='',password='',db='hte_echemdrop_proto'):
+    def __init__(self, url=url,user='',password='',db='hte_echemdrop_proto'):
         self.db=MySQLdb.connect(url, user, password, db, cursorclass = MySQLdb.cursors.SSCursor)
         self.cursor=self.db.cursor()
 
@@ -100,94 +100,94 @@ class dbcomm():
         d=self.getrowdict_fields('id', id, ['plate_id','dc_data__t_v_a_c_i'], valcvtcstr='%d')
         p=os.path.join(os.path.join('J:/hte_echemdrop_proto/data','%d' %d['plate_id']),d['dc_data__t_v_a_c_i'])
         return p
-
-
-
-#def getrecnums_created(plateid, dt0, dt1):
-#    dlist=dbc.getdlist_fields('plate_id', plateid, ['created_at'])
-#    return [count for count, d in enumerate(dlist) if d['created_at']>=dt0 and d['created_at']<dt1]
+#
+#
+#
+##def getrecnums_created(plateid, dt0, dt1):
+##    dlist=dbc.getdlist_fields('plate_id', plateid, ['created_at'])
+##    return [count for count, d in enumerate(dlist) if d['created_at']>=dt0 and d['created_at']<dt1]
+##    
+##db, cursor=dbconnect()
+#dbc=dbcomm(user='',password='',db='hte_echemdrop_proto')
+#
+#tstart=time.time()
+#print tstart
+#
+#
+#if 0:
+#    plate_ids=dbc.getallplateids(None, None)
+#elif 0:
+#    ids=dbc.getallrecordids(None, None)
+#    d=dbc.getrowdict_fields('id', ids[0], ['plate_id','dc_data__t_v_a_c_i'], valcvtcstr='%d')
+#elif 1:
+#    ids=dbc.getallrecordids(None, None)
+#    d=dbc.getrowdict_fields('id', 40380, ['plate_id','dc_data__t_v_a_c_i'], valcvtcstr='%d')
+#    p=os.path.join(os.path.join('J:/hte_echemdrop_proto/data','%d' %d['plate_id']),d['dc_data__t_v_a_c_i'])
+#    f=open(p, mode='r')
+#    s=f.read()
+#    f.close()
 #    
-#db, cursor=dbconnect()
-dbc=dbcomm(user='',password='',db='hte_echemdrop_proto')
-
-tstart=time.time()
-print tstart
-
-
-if 0:
-    plate_ids=dbc.getallplateids(None, None)
-elif 0:
-    ids=dbc.getallrecordids(None, None)
-    d=dbc.getrowdict_fields('id', ids[0], ['plate_id','dc_data__t_v_a_c_i'], valcvtcstr='%d')
-elif 1:
-    ids=dbc.getallrecordids(None, None)
-    d=dbc.getrowdict_fields('id', 40380, ['plate_id','dc_data__t_v_a_c_i'], valcvtcstr='%d')
-    p=os.path.join(os.path.join('J:/hte_echemdrop_proto/data','%d' %d['plate_id']),d['dc_data__t_v_a_c_i'])
-    f=open(p, mode='r')
-    s=f.read()
-    f.close()
-    
-elif 0:#test
-    fields=['sample_no','created_at']
-    n=dbc.getnumrecords('plate_id', 3)
-    d=dbc.getrowdict_fields('plate_id', 3, fields, 7)
-elif 0:#print created_at to find data
-    fields=['sample_no','created_at']
-    dlist=dbc.getdlist_fields('plate_id', 3, fields)    
-    for count,d in enumerate(dlist):
-        print '\t'.join([`count`, `d['sample_no']`,`d['created_at']`])
-elif 1:#get no plate data
-    fields=['id', 'plate_id', 'sample_no', 'sample_code', 'uv_data__l_r', 'created_at']
-    dlist=dbc.getdlist_fields('sample_code', -2, fields)    
-    for count,d in enumerate(dlist):
-        print '\t'.join([`count`, `d['sample_no']`,`d['created_at']`])
-    p='C:/Users/Gregoire/Documents/CaltechWork/UVvisdata/201210NiFeCoTi_P/noplate.pck'
-elif 0:#get plate3 data
-    recnums=dbc.getrecordids_created(3, datetime.datetime(2012, 11, 20, 8, 48, 56), datetime.datetime(2012, 11, 20, 14, 21, 31))
-    fields=['id', 'plate_id', 'sample_no', 'sample_code', 'uv_data__l_r', 'created_at']
-    #recnums=recnums[:4]
-    dlist=dbc.getdlist_fields('plate_id', 3, fields, recnums=recnums)
-    p='C:/Users/Gregoire/Documents/CaltechWork/UVvisdata/201210NiFeCoTi_P/plate3.pck'
-    print len(dlist)
-elif 0:#get plate2 data
-    recnums=dbc.getrecordids_created(2, datetime.datetime(2012, 11, 19, 18, 9, 57), datetime.datetime(2012, 11, 20, 0, 12, 25))
-    fields=['id', 'plate_id', 'sample_no', 'sample_code', 'uv_data__l_r', 'created_at']
-    #recnums=recnums[:40]
-    dlist=dbc.getdlist_fields('plate_id', 2, fields, recnums=recnums)
-    p='C:/Users/Gregoire/Documents/CaltechWork/UVvisdata/201210NiFeCoTi_P/plate2.pck'
-    print len(dlist)
-elif 0:#get plate1 data
-    recnums=dbc.getrecordids_created(1, datetime.datetime(2012, 11, 19, 11, 20, 41), datetime.datetime(2012, 11, 19, 17, 21, 39))
-    fields=['id', 'plate_id', 'sample_no', 'sample_code', 'uv_data__l_r', 'created_at']
-    #recnums=recnums[:4]
-    dlist=dbc.getdlist_fields('plate_id', 1, fields, recnums=recnums)
-    p='C:/Users/Gregoire/Documents/CaltechWork/UVvisdata/201210NiFeCoTi_P/plate1.pck'    
-    print len(dlist)
-elif 0:#get plate3 1strow data
-    recnums=dbc.getrecordids_created(3, datetime.datetime(2012, 11, 20, 15, 21, 28), datetime.datetime(2012, 11, 20, 15, 37, 30))
-    fields=['id', 'plate_id', 'sample_no', 'sample_code', 'uv_data__l_r', 'created_at']
-    #recnums=recnums[:4]
-    dlist=dbc.getdlist_fields('plate_id', 3, fields, recnums=recnums)
-    p='C:/Users/Gregoire/Documents/CaltechWork/UVvisdata/201210NiFeCoTi_P/plate3_firstrowneedstobeedited.pck'
-    print len(dlist)
-    l=numpy.array([d['sample_no'] for d in dlist])
-    s=set([d['sample_no'] for d in dlist])
-
-    for count, sv in enumerate(s):
-        if count%8!=7 and ((l==sv).sum())>3:
-            num=0
-            for d in dlist:
-                if d['sample_no']==sv:
-                    if num<3:
-                        d['sample_code']=0
-                    num+=1
-dbc.db.close()
-
-    
-if 0:
-    f=open(p, mode='w')
-    pickle.dump(dlist, f)
-    f.close()
-
-print time.time(), time.time()-tstart
-
+#elif 0:#test
+#    fields=['sample_no','created_at']
+#    n=dbc.getnumrecords('plate_id', 3)
+#    d=dbc.getrowdict_fields('plate_id', 3, fields, 7)
+#elif 0:#print created_at to find data
+#    fields=['sample_no','created_at']
+#    dlist=dbc.getdlist_fields('plate_id', 3, fields)    
+#    for count,d in enumerate(dlist):
+#        print '\t'.join([`count`, `d['sample_no']`,`d['created_at']`])
+#elif 1:#get no plate data
+#    fields=['id', 'plate_id', 'sample_no', 'sample_code', 'uv_data__l_r', 'created_at']
+#    dlist=dbc.getdlist_fields('sample_code', -2, fields)    
+#    for count,d in enumerate(dlist):
+#        print '\t'.join([`count`, `d['sample_no']`,`d['created_at']`])
+#    p='C:/Users/Gregoire/Documents/CaltechWork/UVvisdata/201210NiFeCoTi_P/noplate.pck'
+#elif 0:#get plate3 data
+#    recnums=dbc.getrecordids_created(3, datetime.datetime(2012, 11, 20, 8, 48, 56), datetime.datetime(2012, 11, 20, 14, 21, 31))
+#    fields=['id', 'plate_id', 'sample_no', 'sample_code', 'uv_data__l_r', 'created_at']
+#    #recnums=recnums[:4]
+#    dlist=dbc.getdlist_fields('plate_id', 3, fields, recnums=recnums)
+#    p='C:/Users/Gregoire/Documents/CaltechWork/UVvisdata/201210NiFeCoTi_P/plate3.pck'
+#    print len(dlist)
+#elif 0:#get plate2 data
+#    recnums=dbc.getrecordids_created(2, datetime.datetime(2012, 11, 19, 18, 9, 57), datetime.datetime(2012, 11, 20, 0, 12, 25))
+#    fields=['id', 'plate_id', 'sample_no', 'sample_code', 'uv_data__l_r', 'created_at']
+#    #recnums=recnums[:40]
+#    dlist=dbc.getdlist_fields('plate_id', 2, fields, recnums=recnums)
+#    p='C:/Users/Gregoire/Documents/CaltechWork/UVvisdata/201210NiFeCoTi_P/plate2.pck'
+#    print len(dlist)
+#elif 0:#get plate1 data
+#    recnums=dbc.getrecordids_created(1, datetime.datetime(2012, 11, 19, 11, 20, 41), datetime.datetime(2012, 11, 19, 17, 21, 39))
+#    fields=['id', 'plate_id', 'sample_no', 'sample_code', 'uv_data__l_r', 'created_at']
+#    #recnums=recnums[:4]
+#    dlist=dbc.getdlist_fields('plate_id', 1, fields, recnums=recnums)
+#    p='C:/Users/Gregoire/Documents/CaltechWork/UVvisdata/201210NiFeCoTi_P/plate1.pck'    
+#    print len(dlist)
+#elif 0:#get plate3 1strow data
+#    recnums=dbc.getrecordids_created(3, datetime.datetime(2012, 11, 20, 15, 21, 28), datetime.datetime(2012, 11, 20, 15, 37, 30))
+#    fields=['id', 'plate_id', 'sample_no', 'sample_code', 'uv_data__l_r', 'created_at']
+#    #recnums=recnums[:4]
+#    dlist=dbc.getdlist_fields('plate_id', 3, fields, recnums=recnums)
+#    p='C:/Users/Gregoire/Documents/CaltechWork/UVvisdata/201210NiFeCoTi_P/plate3_firstrowneedstobeedited.pck'
+#    print len(dlist)
+#    l=numpy.array([d['sample_no'] for d in dlist])
+#    s=set([d['sample_no'] for d in dlist])
+#
+#    for count, sv in enumerate(s):
+#        if count%8!=7 and ((l==sv).sum())>3:
+#            num=0
+#            for d in dlist:
+#                if d['sample_no']==sv:
+#                    if num<3:
+#                        d['sample_code']=0
+#                    num+=1
+#dbc.db.close()
+#
+#    
+#if 0:
+#    f=open(p, mode='w')
+#    pickle.dump(dlist, f)
+#    f.close()
+#
+#print time.time(), time.time()-tstart
+#
