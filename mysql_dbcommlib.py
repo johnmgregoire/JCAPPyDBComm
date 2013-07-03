@@ -4,7 +4,7 @@ import time, datetime
 import os, sys
 
 PyCodePath=os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
-sys.path.append('C:\Users\dhernand\Downloads\PythonCodeSecureFiles\PythonCodeSecureFiles')
+sys.path.append(os.path.join(PyCodePath, 'PythonCodeSecureFiles'))
 from url import url
 
 
