@@ -107,7 +107,7 @@ class dbcomm():
 
     """ Closes both the connection and the crusor. Closing only the the db
         connection can lead to errors. """
-    def close(self)
+    def close(self):
         self.cursor.close()
         self.db.close()
         
