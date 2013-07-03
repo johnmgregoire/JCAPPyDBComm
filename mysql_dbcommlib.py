@@ -4,7 +4,7 @@ import time, datetime
 import os, sys
 
 PyCodePath=os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
-sys.path.append(os.path.join(PyCodePath, 'PythonCodeSecureFiles'))
+sys.path.append('C:\Users\dhernand\Downloads\PythonCodeSecureFiles\PythonCodeSecureFiles')
 from url import url
 
 
@@ -104,6 +104,13 @@ class dbcomm():
         d=self.getrowdict_fields('id', id, ['plate_id','dc_data__t_v_a_c_i'], valcvtcstr='%d')
         p=os.path.join(os.path.join('J:/hte_echemdrop_proto/data','%d' %d['plate_id']),d['dc_data__t_v_a_c_i'])
         return p
+
+    """ Closes both the connection and the crusor. Closing only the the db
+        connection can lead to errors. """
+    def close(self)
+        self.cursor.close()
+        self.db.close()
+        
 
 
 #t=time.time()
