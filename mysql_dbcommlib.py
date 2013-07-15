@@ -3,13 +3,9 @@ import numpy, pylab
 import time, datetime
 import os, sys
 
-PyCodePath=os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
-sys.path.append(os.path.join(PyCodePath, 'PythonCodeSecureFiles'))
+sys.path.append(os.path.expanduser("~/Downloads"))
 from url import url
 
-
-    
-    
 class dbcomm():
     def __init__(self, url=url, user='',password='',db='hte_echemdrop_proto'):
         self.db=MySQLdb.connect(url, user, password, db, cursorclass = MySQLdb.cursors.SSCursor)
